@@ -5,17 +5,19 @@ Prerendring is very important for public SPA applications because of it's impact
 
 ### Project structure description
 
-**BlazorClientPrerender.Shared** - Shared DTO definitions and service interfaces for server side and client side logic
-**BlazorClientPrerender.Service** - Server side service implementations (This implementations is used by server side blazor and our REST API)
-**BlazorClientPrerender.Api** - Our REST API that our client side blazor project will talk to
-**BlazorClientPrerender.Client** - Client side blazor project
-**BlazorClientPrerender.Startup** - Blazor server side rendering project and the one we will expose to the public
+* **BlazorClientPrerender.Shared** - Shared DTO definitions and service interfaces for server side and client side logic
+* **BlazorClientPrerender.Service** - Server side service implementations - used by server side blazor and our REST API
+* **BlazorClientPrerender.Api** - Our REST API that our client side blazor project will talk to
+* **BlazorClientPrerender.Client** - Client side blazor project
+* **BlazorClientPrerender.Startup** - Blazor server side rendering project and the one we will expose to the public
 
 ### Running sample application:
 
 * First we have to start our REST API (https://localhost:7001/) 
 * Serve our client side files, in this example we are using kestrel but it could be easily be changed to nginx or similar (http://localhost:5000/)
 * Run our startup project that will serve the web application (https://localhost:6001/) 
+
+#### Cmd:
 
     cd BlazorClientPrerender.Api
     dotnet run
