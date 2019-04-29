@@ -1,7 +1,9 @@
-﻿# BlazorClientPrerender
+﻿
+# BlazorClientPrerender
 
 This example demonstrates one of the ways to achive client side blazor prerendering (sometimes known as Server side rendering).
-Prerendring is very important for public SPA applications because of it's impact on SEO and initial page load time.
+
+Prerendering is very important for public SPA applications because of its impact on SEO and initial page load time.
 
 ### Project structure description
 
@@ -58,6 +60,27 @@ which exposes client side dependencies:
 
 ### Rendering the data:
 
+#### Current approach (more reliable)
+
+In our startup project we are registering HttpClient with DI, so that we can share client side implementation of our services for initial render (on the server) and for the client side data fetching. 
+
+    // Register HttpClient, in dev mode we won't validate SSL certs because they are self signed
+    services.AddScoped<HttpClient>(s => 
+    {
+    	return Environment.IsDevelopment() ? 
+    		new HttpClient(new HttpClientHandler()
+    		{
+    			  ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+    		}) : new HttpClient();
+    });
+    
+    // Register custom services
+    services.AddScoped<IWeatherForecastService, WeatherForecastClientService>();
+
+#### Old approach
+
+***Altough this approach is slightly faster for initial render (because we are calling our serverside logic directly instead of calling our logic through REST API, we could get different results if there is additional processing on the data after the service layer)***
+
 In this example we are injecting different implementations of IWeatherForecastService depending on project:
 
 In our REST API and in our server side rendering Startup.cs we are registering server side implementation that can access server resources directly (ie. EF DbContext)
@@ -74,4 +97,3 @@ And in our client side we are injecting implementation of service that is using 
     {
     	services.AddSingleton<IWeatherForecastService, WeatherForecastClientService>();
     }
-
